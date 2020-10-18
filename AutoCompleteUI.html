@@ -1,0 +1,72 @@
+﻿<!doctype html>  
+<html lang="en">  
+   <head>  
+      <meta charset="utf-8">  
+      <title>Autocomplete Demo</title>  
+      <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">  
+      <script src="http://code.jquery.com/jquery-1.10.2.js"></script>  
+      <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>  
+  
+      <script>  
+         $(function() {  
+            $( "#autocompleteDB" ).autocomplete({  
+			   source: function (request, response) {
+         $.ajax({
+             url: "https://localhost:44397/api/search/GetDBAutocompleteSuggestions", /*Mention your API endpoint here.*/
+             type: "GET",
+             data: {
+                    term: request.term
+                },
+             success: function (data) {
+                 response($.map(data, function (el) {
+                     return {
+                         label: el.name,
+                         value: el.id
+                     };
+                 }));
+             }
+         });
+            
+			}
+			});  
+			
+	      $( "#autocompleteES" ).autocomplete({  
+			   source: function (request, response) {
+         $.ajax({
+             url: "https://localhost:44397/api/search/GetAutocompleteSuggestions",  /*Mention your API endpoint here.*/
+             type: "GET",
+             data: {
+                    term: request.term
+                },
+             success: function (data) {
+                 response($.map(data, function (el) {
+                     return {
+                         label: el.name,
+                         value: el.id
+                     };
+                 }));
+             }
+         });
+            
+			}
+			});  
+			
+         });  
+      </script>  
+	  
+
+   </head>  
+   <body>  
+
+      <div class="ui-widget">  
+         <p>Autocomplete Example(Using DB Query)</p>  
+         <input id="autocompleteDB">  
+      </div> 
+	  
+	  <div class="ui-widget">  
+         <p>Autocomplete Example(Using ES Query)</p>  
+         <input id="autocompleteES">  
+      </div> 
+	  
+   </body>  
+</html>  
